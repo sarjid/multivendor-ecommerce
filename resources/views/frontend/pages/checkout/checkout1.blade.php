@@ -29,10 +29,12 @@
     <div class="checkout_area section_padding_100">
         <div class="container">
             <div class="row">
+            <form action="{{ route('checkout1.store') }}" method="post">
+                @csrf
                 <div class="col-12">
                     <div class="checkout_details_area clearfix">
                         <h5 class="mb-4">Billing Details</h5>
-                        <form action="#" method="post">
+
                             <div class="row">
                                 @php
                                     $name = explode(' ',$user->full_name);
@@ -130,16 +132,17 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+
                     </div>
                 </div>
 
                 <div class="col-12">
                     <div class="checkout_pagination d-flex justify-content-end mt-50">
-                        <a href="checkout-1.html" class="btn btn-primary mt-2 ml-2">Go Back</a>
-                        <a href="checkout-3.html" class="btn btn-primary mt-2 ml-2">Continue</a>
+                        <a href="{{ route('cart') }}" class="btn btn-primary mt-2 ml-2">Go Back</a>
+                        <button type="submit" class="btn btn-primary mt-2 ml-2">Continue</>
                     </div>
                 </div>
+            </form>
             </div>
         </div>
     </div>

@@ -101,6 +101,20 @@
                             </ul>
                         </li>
 
+                        <li class="@yield('manage-shipping')">
+                            <a href="javascript::void(0)" class="has-arrow"><i class="icon-briefcase"></i>
+                                <span>Shipping Management</span>
+                            </a>
+                            <ul>
+                                <li class="@yield('all-shipping')">
+                                    <a href="{{ route('shipping.index') }}">All Shipping</a>
+                                </li>
+                                <li class="@yield('create-shipping')">
+                                    <a href="{{ route('shipping.create') }}">Add Shipping</a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <li>
                             <a href="javascript::void(0)" class="has-arrow"><i class="icon-layers"></i>
                                 <span>Order Management</span>

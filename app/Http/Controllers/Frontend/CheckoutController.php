@@ -13,4 +13,14 @@ class CheckoutController extends Controller
         $user = Auth::user();
         return view('frontend.pages.checkout.checkout1',compact('user'));
     }
+
+    //store
+    public function checkout1Store(Request $request){
+        dd($request->all());
+    }
+
+
+    $productImage = Product::where('id',$id)->value('thambnail_image');
+    return $productImage;
+
 }
