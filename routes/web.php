@@ -8,6 +8,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\Frontend\ShopController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShippingController;
@@ -42,14 +43,23 @@ Route::get('cart',[CartController::class,'cart'])->name('cart');
 Route::post('cart/update',[CartController::class,'cartUpdate'])->name('cart.update');
 //coupon section
 Route::post('coupon/add',[CartController::class,'couponAdd'])->name('coupon.add');
+Route::get('coupon/remove/{coupon}',[CartController::class,'couponRemove'])->name('coupon.remove');
 //wishlist section
 Route::get('wishlist',[WishlistController::class,'wishlist'])->name('wishlist');
 Route::post('wishlist-store',[WishlistController::class,'wishlistStore'])->name('wishlist.store');
 Route::post('wishlist-move',[WishlistController::class,'wishlistMove'])->name('wishlist.move');
 //checkout section
 Route::get('checkout1',[CheckoutController::class,'checkout1'])->name('checkout1')->middleware('user');
-Route::post('checkout1-store',[CheckoutController::class,'checkout1Store'])->name('checkout1.store')->middleware('user');
+Route::post('checkout-first',[CheckoutController::class,'checkout1Store'])->name('checkout1.store')->middleware('user');
+Route::post('checkout-second',[CheckoutController::class,'checkout2Store'])->name('checkout2.store')->middleware('user');
+Route::post('checkout-third',[CheckoutController::class,'checkout3Store'])->name('checkout3.store')->middleware('user');
+Route::post('checkout-last',[CheckoutController::class,'checkoutLastStore'])->name('checkoutlast.store')->middleware('user');
+Route::get('order-complete/{order}',[CheckoutController::class,'orderComplete'])->name('complete')->middleware('user');
 
+
+//shop section
+Route::get('shop',[ShopController::class,'shop'])->name('shop');
+Route::post('shop-filter',[ShopController::class,'shopFilter'])->name('shop.filter');
 
 Auth::routes(['register'=> false]);
 

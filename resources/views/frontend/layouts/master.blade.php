@@ -13,8 +13,93 @@
     </div>
 
     <!-- Header Area -->
-    <header class="header_area" id="header-ajax">
-        @include('frontend.layouts.header')
+    <header class="header_area" >
+    <!-- Top Header Area -->
+    <div class="top-header-area">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-6">
+                    <div class="welcome-note">
+                        <span class="popover--text" data-toggle="popover" data-content="Welcome to Bigshop ecommerce template."><i class="icofont-info-square"></i></span>
+                        <span class="text">Welcome to Bigshop ecommerce template.</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="language-currency-dropdown d-flex align-items-center justify-content-end">
+                        <!-- Language Dropdown -->
+                        <div class="language-dropdown">
+                            <div class="dropdown">
+                                <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    English
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                                    <a class="dropdown-item" href="#">Bangla</a>
+                                    <a class="dropdown-item" href="#">Arabic</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Currency Dropdown -->
+                        <div class="currency-dropdown">
+                            <div class="dropdown">
+                                <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    $ USD
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+                                    <a class="dropdown-item" href="#">৳ BDT</a>
+                                    <a class="dropdown-item" href="#">€ Euro</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div class="bigshop-main-menu">
+        <div class="container">
+            <div class="classy-nav-container breakpoint-off">
+                <nav class="classy-navbar" id="bigshopNav">
+                    <!-- Nav Brand -->
+                    <a href="{{ url('/') }}" class="nav-brand"><img src="{{ asset('frontend/img/core-img/') }}/logo.png" alt="logo"></a>
+
+                    <!-- Toggler -->
+                    <div class="classy-navbar-toggler">
+                        <span class="navbarToggler"><span></span><span></span><span></span></span>
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="classy-menu">
+                        <!-- Close -->
+                        <div class="classycloseIcon">
+                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                        </div>
+
+                        <!-- Nav -->
+                        <div class="classynav">
+                            <ul>
+                                <li>
+                                    <a href="{{ route('home') }}">Home</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('shop') }}">Shop</a>
+                                </li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="hero_meta_area ml-auto d-flex align-items-center justify-content-end" id="header-ajax">
+                    <!-- Hero Meta -->
+                        @include('frontend.layouts.header')
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
     </header>
     <!-- Header Area End -->
 

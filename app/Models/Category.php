@@ -32,6 +32,6 @@ class Category extends Model
 
     //join to products
     public function products(){
-        return $this->hasMany('App\Models\Product','cat_id','id');
+        return $this->hasMany('App\Models\Product','cat_id','id')->where('status','active');
     }
 }

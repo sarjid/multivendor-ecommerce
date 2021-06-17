@@ -19,7 +19,7 @@
     <!-- Checkout Step Area -->
     <div class="checkout_steps_area">
         {{-- <a class="complated" href="checkout-1.html"><i class="icofont-check-circled"></i> Login</a> --}}
-        <a class="active" href="checkout-2.html"><i class="icofont-check-circled"></i> Billing</a>
+        <a class="active" href="{{ route('checkout1') }}"><i class="icofont-check-circled"></i> Billing</a>
         <a href="checkout-3.html"><i class="icofont-check-circled"></i> Shipping</a>
         <a href="checkout-4.html"><i class="icofont-check-circled"></i> Payment</a>
         <a href="checkout-5.html"><i class="icofont-check-circled"></i> Review</a>
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="email">Email Address</label>
-                                    <input type="email" name="email" class="form-control" id="email" placeholder="Email Address" disabled value="{{ $user->email }}">
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="Email Address" readonly value="{{ $user->email }}">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="phone">Phone Number</label>
@@ -100,7 +100,7 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="semail">Email Address</label>
-                                        <input type="email" name="semail" class="form-control" id="semail" placeholder="Email Address"  value="{{ $user->email }}">
+                                        <input type="email" name="semail" class="form-control" id="semail" placeholder="Email Address" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="sphone">Phone Number</label>
@@ -126,10 +126,7 @@
                                         <label for="postcode">Postcode/Zip</label>
                                         <input type="text" name="spostcode" class="form-control" id="spostcode" placeholder="Postcode / Zip" value="{{ $user->spostcode }}">
                                     </div>
-                                    <div class="col-md-12">
-                                        <label for="snote">Order Notes</label>
-                                        <textarea class="form-control" name="note" id="snote" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
-                                    </div>
+
                                 </div>
                             </div>
 
@@ -163,7 +160,7 @@
                 $('#sstate').val( $('#state').val());
                 $('#spostcode').val( $('#postcode').val());
                 $('#saddress').val( $('#address').val());
-                $('#snote').val( $('#note').val());
+                $('#note').val();
             }else{
                 $('#sfirst_name').val("");
                 $('#slast_name').val("");
@@ -174,7 +171,7 @@
                 $('#sstate').val("");
                 $('#spostcode').val("");
                 $('#saddress').val("");
-                $('#snote').val("");
+
             }
         });
     </script>

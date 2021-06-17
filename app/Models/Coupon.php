@@ -20,9 +20,9 @@ class Coupon extends Model
     // use for coupon apply time in cartcontroller
     public function discount($total){
         if ($this->type =='fixed') {
-            return number_format($this->value,2);
+            return number_format(round($this->value),2);
         }elseif ($this->type == 'percent') {
-           return number_format(($this->value/100) * $total,2);
+           return number_format(round(($this->value/100) * $total),2);
         }else {
             return 0;
         }

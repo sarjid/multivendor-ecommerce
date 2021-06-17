@@ -13,5 +13,5 @@ class Order extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id','product_id','order_number','sub_total','total_amount','coupon','delivery_charge','quantity','first_name','last_name','email','phone','country','address','city','state','sfirst_name','slast_name','semail','sphone','scountry','saddress','scity','sstate','note'];
+    protected $fillable = ['user_id','product_id','order_number','sub_total','total_amount','coupon','payment_method','payment_status','condition','delivery_charge','quantity','first_name','last_name','email','phone','country','address','city','state','sfirst_name','slast_name','semail','sphone','scountry','saddress','scity','sstate','note'];
 }

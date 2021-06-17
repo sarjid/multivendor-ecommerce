@@ -91,7 +91,7 @@ class IndexController extends Controller
 
     //////////////////////////////// User AUthentication system ============================
     public function userAuth(){
-        Session::put('urinl.tended',URL::previous());
+        Session::put('url.intended',URL::previous());
         return view('frontend.auth.auth');
     }
 

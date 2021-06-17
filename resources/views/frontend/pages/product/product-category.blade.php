@@ -190,8 +190,6 @@
             });
         });
     </script>
-
-{{-- --------------------- wishlist ---------------  --}}
  {{-- //product add to wishlist  --}}
  <script>
     $(document).on('click','.add_to_wishlist',function (e) {

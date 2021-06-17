@@ -29,9 +29,7 @@ class CartController extends Controller
         $result = Cart::instance('shopping')->add($product_id,$product[0]['title'],$product_qty,$price)->associate('App\Models\Product');
         if ($result) {
             $response['status'] = true;
-            // $response['product_id'] = $product_id;
             $response['total'] = Cart::subtotal();
-            $response['cart_count'] = Cart::instance('shopping')->count();
             $response['message'] = "Item Was Added To Your Cart";
         }
         //for header mini cart
@@ -59,8 +57,12 @@ class CartController extends Controller
         if ($request->ajax()) {
             $header = view('frontend.layouts.header')->render();
             $cartList = view('frontend.layouts._cart-lists')->render();
+            $cartTotal = view('frontend.layouts._cart-total')->render();
+            $couponTotal = view('frontend.layouts._coupon-form')->render();
             $response['cart_list'] = $cartList;
             $response['header'] = $header;
+            $response['cart_total'] = $cartTotal;
+            $response['coupon_form'] = $couponTotal;
 
         }
 
@@ -118,13 +120,18 @@ class CartController extends Controller
          if ($request->ajax()) {
             $header = view('frontend.layouts.header')->render();
             $cartList = view('frontend.layouts._cart-lists')->render();
+            $cartTotal = view('frontend.layouts._cart-total')->render();
+            $couponTotal = view('frontend.layouts._coupon-form')->render();
             $response['header'] = $header;
             $response['cart_list'] = $cartList;
+            $response['cart_total'] = $cartTotal;
+            $response['coupon_form'] = $couponTotal;
             $response['message'] = $message;
         }
 
         return $response;
     }
+    // ==================== Coupon ===============
     //coupon add
     public function couponAdd(Request $request){
        $coupon = Coupon::where('code',$request->code)->where('status','active')->first();
@@ -141,5 +148,16 @@ class CartController extends Controller
        }else {
             return redirect()->back()->with('error','Invalid coupon code, Please enter valid coupon ');
        }
+    }
+
+    //coupon remove
+    public function couponRemove($coupon){
+        $coupon = Coupon::where('code',$coupon)->value('code');
+        if ($coupon) {
+            Session::forget('coupon');
+            return redirect()->back()->with('success','Coupon Remove Success');
+        }else{
+            return redirect()->back()->with('error','Something Went Wrong');
+        }
     }
 }

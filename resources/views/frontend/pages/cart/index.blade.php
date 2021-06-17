@@ -33,16 +33,8 @@
                         <h6>Have a Coupon?</h6>
                         <p>Enter your coupon code here &amp; get awesome discounts!</p>
                         <!-- Form -->
-                        <div class="coupon-form">
-                            <form action="{{ route('coupon.add') }}" id="coupon-form" method="POST">
-                                @csrf
-                        @if (session()->has('coupon'))
-                            <input type="text" class="form-control" required name="code" placeholder="Enter Your Coupon Code"  value="{{ session('coupon')['code'] }}">
-                        @else
-                            <input type="text" class="form-control" required name="code" placeholder="Enter Your Coupon Code">
-                        @endif
-                            <button type="submit" class="coupon-btn btn btn-primary">Apply Coupon</button>
-                            </form>
+                        <div class="coupon-form" id="coupon_form">
+                            @include('frontend.layouts._coupon-form')
                         </div>
                     </div>
                 </div>
@@ -50,47 +42,8 @@
                 <div class="col-12 col-lg-5">
                     <div class="cart-total-area mb-30">
                         <h5 class="mb-3">Cart Totals</h5>
-                        <div class="table-responsive">
-                            <table class="table mb-3">
-                                <tbody>
-                                    <tr>
-                                        <td>Sub Total</td>
-                                        <td>
-                                            ${{ \Gloudemans\Shoppingcart\Facades\Cart::instance('shopping')->subtotal() }}
-                                        </td>
-                                    </tr>
-
-                                @if (\Illuminate\Support\Facades\Session::has('coupon'))
-                                    <tr>
-                                        <td>Discount</td>
-                                        <td>
-                                            ${{ \Illuminate\Support\Facades\Session::get('coupon')['value'] }}
-                                        </td>
-                                    </tr>
-                                @endif
-                                    {{-- <tr>
-                                        <td>VAT (10%)</td>
-                                        <td>$5.60</td>
-                                    </tr> --}}
-                                    <tr>
-                                        <td>Total</td>
-                                        <td>
-                                        @if (session()->has('coupon'))
-                                            @php
-                                              $subtotal =  str_replace(',','',\Gloudemans\Shoppingcart\Facades\Cart::subtotal());
-
-                                              $sessionSubtotal =  str_replace(',','',session()->get('coupon')['value']);
-                                            @endphp
-
-                                            ${{ number_format(round($subtotal-$sessionSubtotal),2) }}
-
-                                        @else
-                                            ${{ \Gloudemans\Shoppingcart\Facades\Cart::subtotal() }}
-                                        @endif
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="table-responsive" id="cart_total">
+                            @include('frontend.layouts._cart-total')
                         </div>
                         <a href="{{ route('checkout1') }}" class="btn btn-primary d-block">Proceed To Checkout</a>
                     </div>
@@ -127,6 +80,8 @@
                     //for mini cart
                     $('body #header-ajax').html(data['header']);
                     $('body #cart_list').html(data['cart_list']);
+                    $('body #cart_total').html(data['cart_total']);
+                    $('body #coupon_form').html(data['coupon_form']);
                     //start alert
                     swal({
                     title: "Item Deleted!",
@@ -184,6 +139,8 @@
                     //for mini cart
                     $('body #header-ajax').html(data['header']);
                     $('body #cart_list').html(data['cart_list']);
+                    $('body #cart_total').html(data['cart_total']);
+                    $('body #coupon_form').html(data['coupon_form']);
                     alert(data['message']);
                     //start alert
                     // swal({
