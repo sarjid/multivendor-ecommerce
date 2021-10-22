@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductAttribute;
+use App\Models\ProductReview;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +68,7 @@ class IndexController extends Controller
             }
         }
         $route = 'product-category';
+        
         // short by product END
 
         //ajax load more data
@@ -82,7 +85,9 @@ class IndexController extends Controller
         $product = Product::with('rel_prods')->where('slug',$slug)->first();
         if ($product) {
             $photos = explode(',',$product->photo);
-            return view('frontend.pages.product.product-detail',compact(['product','photos']));
+            $productAttributes = ProductAttribute::where('product_id',$product->id)->orderBy('size','ASC')->get();
+            $productReviews = ProductReview::with('user')->where(['product_id'=> $product->id,'status'=>'accept'])->orderBy('id','DESC')->paginate(10);
+            return view('frontend.pages.product.product-detail',compact(['product','photos','productAttributes','productReviews']));
         }else {
             return redirect()->back();
         }

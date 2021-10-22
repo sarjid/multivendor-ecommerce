@@ -63,6 +63,31 @@
                                 </div>
                             </div>
 
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label for="status">Size Guide <span class="text-danger">*</span> </label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                        <a id="lfm1" data-input="thumbnail1" data-preview="holder1" class="btn btn-primary">
+                                            <i class="fa fa-picture-o"></i> Choose
+                                        </a>
+                                        </span>
+                                        <input id="thumbnail1" class="form-control" type="text" name="size_guide" value="{{ $product->size_guide }}" >
+                                        @error('size_guide')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                  <div id="holder1" style="margin-top:15px;max-height:100px;"> </div>
+                                  @if ($sizeGuide =='')
+                                  <img src="{{ $product->size_guide }}" style="margin-top:15px;max-height:100px;">
+                                  @else
+                                    @foreach ($sizeGuide as $guide)
+                                    <img src="{{ $guide }}" style="margin-top:15px;max-height:100px;">
+                                    @endforeach
+                                  @endif
+                                </div>
+                            </div>
+
                             <div class="col-lg-6 col-md-6">
                                 <div class="form-group">
                                     <label for="status" >Descriptions <span class="text-danger">*</span> </label>
@@ -78,6 +103,26 @@
                                         <textarea  class="form-control summernote"  name="summary"  placeholder="summary" />{{ $product->summary }}</textarea>
                                     </div>
                                     @error('summary')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label for="status" >Additiional Info <span class="text-danger">*</span> </label>
+                                        <textarea  class="form-control summernote"  name="additional_info"  placeholder="additional info" />{{ $product->additional_info }}
+                                    </textarea>
+                                </div>
+                                @error('additional_info')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-lg-36 col-md-6">
+                                <div class="form-group">
+                                    <label for="status" >Return Cancellation<span class="text-danger">*</span> </label>
+                                        <textarea  class="form-control summernote"  name="return_cancellation"  placeholder="return cancellation" />{{ $product->return_cancellation }}</textarea>
+                                    </div>
+                                    @error('return_cancellation')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                             </div>
@@ -224,18 +269,17 @@
 @section('scripts')
     <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
     <script>
-        $('#lfm').filemanager('image');
+        $('#lfm,#lfm1').filemanager('image');
     </script>
 
     <script>
         $.jQuery(document).ready(function() {
+            $('.summernote').summernote({
 
-        $('.summernote').summernote({
-
+            });
         });
-    });
 
-</script>
+    </script>
 
 {{-- //parent category show/hide click with yes button --}}
 <script>

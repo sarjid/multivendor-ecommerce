@@ -5,7 +5,7 @@
         </div>
 
         <div class="navbar-brand">
-            <a href="index.html">
+            <a href="{{ route('admin') }}">
                 {{-- <img src="https://www.wrraptheme.com/templates/lucid/html/assets/images/logo.svg" alt="Lucid Logo" class="img-responsive logo"> --}}
                 <h5 style="color: red;">Admin Panel</h5>
             </a>
@@ -20,7 +20,7 @@
             <div id="navbar-menu">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="file-dashboard.html" class="icon-menu d-none d-sm-block d-md-none d-lg-block"><i class="fa fa-folder-open-o"></i></a>
+                        <a href="{{ url('/') }}" target="_blank" class="icon-menu d-none d-sm-block d-md-none d-lg-block"><i class="fa fa-folder-open-o"></i></a>
                     </li>
                     <li>
                         <a href="app-calendar.html" class="icon-menu d-none d-sm-block d-md-none d-lg-block"><i class="icon-calendar"></i></a>

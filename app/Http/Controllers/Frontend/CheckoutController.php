@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderMail;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -96,7 +97,7 @@ class CheckoutController extends Controller
        if (empty(Session::get('checkout')[1]['payment_method']) && empty(Session::get('checkout')[1]['payment_status'])) {
            Session::push('checkout',[
                'payment_method' => $request->payment_method,
-               'payment_status' =>'paid',
+               'payment_status' =>'unpaid',
            ]);
        }
 
@@ -117,7 +118,7 @@ class CheckoutController extends Controller
         $order['sub_total'] =  str_replace(',','',Cart::instance('shopping')->subtotal());
         $order['total_amount'] = str_replace(',','',Cart::instance('shopping')->subtotal()) + Session::get('checkout')[0]['delivery_charge'] - $order['coupon'];
         $order['payment_method'] = Session::get('checkout')['1']['payment_method'];
-        $order['payment_status'] = Session::get('checkout')['1']['payment_status'];
+        $order['payment_status'] = 'unpaid';
         $order['delivery_charge'] = Session::get('checkout')['0']['delivery_charge'];
         $order['condition'] = "pending";
         $order['first_name'] = Session::get('checkout')['first_name'];
@@ -142,6 +143,13 @@ class CheckoutController extends Controller
         $order['spostcode'] = Session::get('checkout')['spostcode'];
         $status = $order->save();
 
+        //products item save
+        foreach (Cart::instance('shopping')->content() as $item) {
+            $product_id[] = $item->id;
+            $product = Product::find($item->id);
+            $quantity  = $item->qty;
+            $order->products()->attach($product,['quantity' => $quantity]);
+        }
        if ($status) {
         Mail::to($order['email'])->bcc($order['semail'])->cc('habil@gmail.com')->send(new OrderMail($order));
            if (Session::has('coupon')) {

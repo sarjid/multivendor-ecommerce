@@ -108,5 +108,4 @@
     });
 
 </script>
-    </script>
 @endsection

@@ -8,18 +8,16 @@
                         <h6>Contact Us</h6>
                     </div>
                     <ul class="footer_content">
-                        <li><span>Address:</span> Lords, London, UK - 1259</li>
-                        <li><span>Phone:</span> 002 63695 24624</li>
-                        <li><span>FAX:</span> 002 78965 369552</li>
-                        <li><span>Email:</span> support@example.com</li>
+                        <li><span>Address:</span>{{ get_setting('address') }}</li>
+                        <li><span>Phone:</span> {{ get_setting('phone') }}</li>
+                        <li><span>FAX:</span> {{ get_setting('fax') }}</li>
+                        <li><span>Email:</span> {{ get_setting('email') }}</li>
                     </ul>
                     <div class="footer_social_area mt-15">
-                        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-rss" aria-hidden="true"></i></a>
+                        <a href="{{ get_setting('facebook_url') }}" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        <a href="{{ get_setting('twitter_url') }}" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        <a href="{{ get_setting('linkedin_url') }}" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                        <a href="{{ get_setting('pinterest_url') }}" target="_blank"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                     </div>
                 </div>
             </div>
@@ -108,7 +106,7 @@
                 <!-- Copywrite -->
                 <div class="col-12 col-md-6">
                     <div class="copywrite_text">
-                        <p>Made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="#">Designing World</a></p>
+                        <p>Made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="#">{{ get_setting('footer') }}</a></p>
                     </div>
                 </div>
                 <!-- Payment Method -->

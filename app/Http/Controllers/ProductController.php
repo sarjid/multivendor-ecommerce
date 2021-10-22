@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductAttribute;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -28,7 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $vendors = User::where('role','vendor')->orderBy('username','ASC')->get();
+        $vendors = Seller::orderBy('username','ASC')->get();
         $categories = Category::where('is_parent',1)->orderBy('title','ASC')->get();
         $brands = Brand::orderBy('title','ASC')->get();
         return view('backend.product.create',compact('vendors','categories','brands'));
@@ -56,6 +58,9 @@ class ProductController extends Controller
             $slug = time().'-'.$slug;
         }
         $data['slug'] = $slug;
+       $data['added_by'] = 'admin';
+       $data['user_id'] = auth('admin')->user()->id;
+
         $data['offer_price'] = (round($request->price - (($request->price * $request->discount)/100)));
         $status = Product::create($data);
         if ($status) {
@@ -85,6 +90,13 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        $productAttributes = ProductAttribute::where('product_id',$id)->orderBy('size','ASC')->get();
+        $product = Product::find($id);
+        if($product){
+            return view('backend.product.product-attribute',compact('product','productAttributes'));
+        }else{
+            return redirect()->back()->with('error','Something Wrong');
+        }
 
     }
 
@@ -98,11 +110,12 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if ($product) {
-            $vendors = User::where('role','vendor')->orderBy('username','ASC')->get();
+            $vendors = Seller::orderBy('username','ASC')->get();
             $categories = Category::where('is_parent',1)->orderBy('title','ASC')->get();
             $brands = Brand::orderBy('title','ASC')->get();
             $multiPhoto = explode(',',$product->photo);
-           return view('backend.product.edit',compact('product','vendors','categories','brands','multiPhoto'));
+            $sizeGuide = explode(',',$product->size_guide);
+           return view('backend.product.edit',compact('product','vendors','categories','brands','multiPhoto','sizeGuide'));
         }else {
             return redirect()->back()->with('error','Something Wrong');
         }
@@ -166,4 +179,45 @@ class ProductController extends Controller
             return redirect()->back('error','Data Not Found');
         }
     }
+
+
+    //store product attribute
+    public function attributeStore(Request $request,$pID){
+
+        $request->validate([
+            'original_price' => 'required',
+            'size' => 'required'
+        ]);
+
+        $data = $request->all();
+        foreach ($data['original_price'] as $key => $value) {
+           if (!empty($value)) {
+                $att = new ProductAttribute();
+                $att['product_id'] = $pID;
+                $att['original_price'] = $value;
+                $att['offer_price'] = $data['offer_price'][$key];
+                $att['size'] = $data['size'][$key];
+                $att['stock'] = $data['stock'][$key];
+                $att->save();
+           }
+        }
+
+        return redirect()->back()->with('success','Added Success');
+    }
+
+    //delete product attribute
+    public function attributeDelete($id){
+        $product = ProductAttribute::find($id);
+        if($product){
+            $status = $product->delete();
+            if ($status) {
+                return redirect()->back()->with('success','Successfully Deleted');
+            }else {
+                return back()->with('error','Something Went Wrong');
+            }
+        }else{
+            return redirect()->back('error','Data Not Found');
+        }
+    }
+
 }

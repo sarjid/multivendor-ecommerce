@@ -17,34 +17,37 @@ class UsersTableSeeder extends Seeder
     {
         //
         DB::table('users')->insert([
-            //admin
-            [
-                'full_name' => 'Sarjid Islam',
-                'username' => 'Admin',
-                'email' => 'admin@gmail.com',
-                'phone' => '01722260010',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-                'status' => 'active',
-            ],
-            //seller
-            [
-                'full_name' => 'Gaget Planet seller',
-                'username' => 'seller',
-                'email' => 'seller@gmail.com',
-                'phone' => '01766620010',
-                'password' => Hash::make('password'),
-                'role' => 'seller',
-                'status' => 'active',
-            ],
-            //customers
             [
                 'full_name' => 'New Customer',
                 'username' => 'Customer',
                 'email' => 'customer@gmail.com',
-                'phone' => '01318090002',
+                'phone' => '01722260010',
                 'password' => Hash::make('password'),
-                'role' => 'customer',
+                'status' => 'active',
+            ]
+        ]);
+
+        DB::table('admins')->insert([
+            [
+                'full_name' => 'Admin',
+                'username' => 'Admin',
+                'email' => 'admin@gmail.com',
+                'phone' => '01722260011',
+                'password' => Hash::make('password'),
+                'status' => 'active',
+            ]
+        ]);
+
+        DB::table('sellers')->insert([
+            [
+                'full_name' => 'Mr. Seller',
+                'username' => 'Mr. Seller',
+                'email' => 'seller@gmail.com',
+                'address' => 'Dhaka,Bangladesh',
+                'phone' => '01722260012',
+                'photo' => '',
+                'password' => Hash::make('password'),
+                'is_verified' => 0,
                 'status' => 'active',
             ]
         ]);

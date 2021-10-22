@@ -1,5 +1,14 @@
 @extends('frontend.layouts.master')
 @section('content')
+<style>
+    .widget.price .range-price{
+        font-size: 18px;
+        border: none;
+        background: #f8f8ff;
+        width: 70%;
+    }
+</style>
+
     <!-- Breadcumb Area -->
     <div class="breadcumb_area">
         <div class="container h-100">
@@ -24,7 +33,7 @@
                 <div class="col-12 col-sm-5 col-md-4 col-lg-3">
                     <div class="shop_sidebar_area">
 
-                        <!-- Single Widget -->
+                        <!-- category filter -->
                         <div class="widget catagory mb-30">
                             <h6 class="widget-title">Product Categories</h6>
                             <div class="widget-desc">
@@ -45,23 +54,33 @@
                             </div>
                         </div>
 
-                        <!-- Single Widget -->
+                        <!-- Filter Price -->
                         <div class="widget price mb-30">
                             <h6 class="widget-title">Filter by Price</h6>
                             <div class="widget-desc">
                                 <div class="slider-range">
-                                    <div data-min="0" data-max="1350" data-unit="$" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="0" data-value-max="1350" data-label-result="Price:">
+                                    <div id="slider-range" data-min="{{ Helper::minPrice() }}" data-max="{{ Helper::maxPrice() }}" data-unit="" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="{{ Helper::minPrice() }}" data-value-max="{{ Helper::maxPrice() }}" data-label-result="Price:">
                                         <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
                                         <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                                         <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
                                     </div>
-                                    <div class="range-price">Price: 0 - 1350</div>
+
+                                    <input  type="hidden"  value="@if(!empty($_GET['price'])) {{ $_GET['price'] }} @endif" id="price_range" name="price_range">
+                                    @if (!empty($_GET['price']))
+                                        @php
+                                        $price = explode('-',$_GET['price']);
+                                        @endphp
+                                    @endif
+                                    <input type="text" class="range-price form-control" readonly id="amount" value="@if(!empty($_GET['price'])) ${{ $price[0] }} @else ${{ Helper::minPrice() }} @endif - @if(!empty($_GET['price'])) ${{ $price[1] }} @else ${{ Helper::maxPrice() }} @endif">
+
+                                    {{-- <div class="range-price">Price: {{ Helper::minPrice() }} - {{ Helper::maxPrice() }}</div> --}}
+                                    <button type="submit" class="btn btn-primary btn-sm mt-2">Filter</button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Single Widget -->
-                        <div class="widget color mb-30">
+                        <!-- color filter -->
+                        {{-- <div class="widget color mb-30">
                             <h6 class="widget-title">Filter by Color</h6>
                             <div class="widget-desc">
                                 <!-- Single Checkbox -->
@@ -90,42 +109,30 @@
                                     <label class="custom-control-label orange" for="customCheck10">Orange <span class="text-muted">(7)</span></label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <!-- Single Widget -->
+                        <!-- brands filter -->
                         <div class="widget brands mb-30">
                             <h6 class="widget-title">Filter by brands</h6>
                             <div class="widget-desc">
-                                <!-- Single Checkbox -->
+                            @if (!empty($_GET['brand']))
+                                @php
+                                    $filter_brands = explode(',',$_GET['brand']);
+                                @endphp
+                            @endif
+                            @forelse ($brands as $brand)
                                 <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                    <label class="custom-control-label" for="customCheck11">Zara <span class="text-muted">(213)</span></label>
+                                    <input type="checkbox" @if(!empty($filter_brands) &&  in_array($brand->slug,$filter_brands)) checked @endif class="custom-control-input" id="{{ $brand->slug }}" value="{{ $brand->slug }}" name="brand[]" onchange="this.form.submit();">
+                                    <label class="custom-control-label" for="{{ $brand->slug }}">{{ $brand->title }} <span class="text-muted">({{ count($brand->products) }})</span></label>
                                 </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                    <label class="custom-control-label" for="customCheck12">Gucci <span class="text-muted">(65)</span></label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                    <label class="custom-control-label" for="customCheck13">Addidas <span class="text-muted">(70)</span></label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck14">
-                                    <label class="custom-control-label" for="customCheck14">Nike <span class="text-muted">(104)</span></label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck15">
-                                    <label class="custom-control-label" for="customCheck15">Denim <span class="text-muted">(71)</span></label>
-                                </div>
+                            @empty
+                                <span class="text-danger">No Brand Founds..!</span>
+                            @endforelse
                             </div>
                         </div>
 
                         <!-- Single Widget -->
-                        <div class="widget rating mb-30">
+                        {{-- <div class="widget rating mb-30">
                             <h6 class="widget-title">Average Rating</h6>
                             <div class="widget-desc">
                                 <ul>
@@ -140,10 +147,40 @@
                                     <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star-o" aria-hidden="true"></i> <i class="fa fa-star-o" aria-hidden="true"></i> <i class="fa fa-star-o" aria-hidden="true"></i> <i class="fa fa-star-o" aria-hidden="true"></i> <span class="text-muted">(3)</span></a></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
 
+                          <!-- size filter -->
+                          <div class="widget brands mb-30">
+                            <h6 class="widget-title">Filter by Size</h6>
+                            <div class="widget-desc">
+                                <!-- Single Checkbox -->
+                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
+                                    <input type="checkbox" @if(!empty($_GET['size']) && $_GET['size'] == 'S') checked @endif name="size" value="S"  onchange="this.form.submit();" class="custom-control-input" id="sizeS">
+                                    <label class="custom-control-label" for="sizeS">S <span class="text-muted">({{ \App\Models\Product::where(['status' => 'active','size' => 'S'])->count() }})</span></label>
+                                </div>
+
+                                <!-- Single Checkbox -->
+                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
+                                    <input type="checkbox" @if(!empty($_GET['size']) && $_GET['size'] == 'M') checked @endif name="size" value="M"  onchange="this.form.submit();" class="custom-control-input" id="sizeM">
+                                    <label class="custom-control-label" for="sizeM">M <span class="text-muted">({{ \App\Models\Product::where(['status' => 'active','size' => 'M'])->count() }})</span></label>
+                                </div>
+
+                                 <!-- Single Checkbox -->
+                                 <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
+                                    <input type="checkbox" @if(!empty($_GET['size']) && $_GET['size'] == 'L') checked @endif name="size" value="L"  onchange="this.form.submit();" class="custom-control-input" id="sizeL">
+                                    <label class="custom-control-label" for="sizeL">L <span class="text-muted">({{ \App\Models\Product::where(['status' => 'active','size' => 'L'])->count() }})</span></label>
+                                </div>
+
+                                 <!-- Single Checkbox -->
+                                 <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
+                                    <input type="checkbox" @if(!empty($_GET['size']) && $_GET['size'] == 'XL') checked @endif name="size" value="XL"  onchange="this.form.submit();" class="custom-control-input" id="sizeXL">
+                                    <label class="custom-control-label" for="sizeXL">XL <span class="text-muted">({{ \App\Models\Product::where(['status' => 'active','size' => 'XL'])->count() }})</span></label>
+                                </div>
+
+                            </div>
+                        </div>
                         <!-- Single Widget -->
-                        <div class="widget size mb-30">
+                        {{-- <div class="widget size mb-30">
                             <h6 class="widget-title">Filter by Size</h6>
                             <div class="widget-desc">
                                 <ul>
@@ -154,7 +191,7 @@
                                     <li><a href="#">XL</a></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
@@ -170,7 +207,7 @@
                             </div>
                         </div>
                         <select class="small right" name="sortBy" onchange="this.form.submit();">
-                            <option selected value="defaultSort">Sort By Default</option>
+                            <option selected value="">Sort By Default</option>
                             <option value="priceAsc" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='priceAsc') selected @endif >Price - Lower To Higher</option>
                             <option value="priceDesc" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='priceDesc') selected @endif>Price - Higher To Lower</option>
                             <option value="titleAsc" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='titleAsc') selected @endif>Alphabetical Ascending</option>
@@ -234,12 +271,12 @@
                                         </p>
                                         <a href="{{ route('product.detail',$item->slug) }}">{{ ucfirst($item->title) }}</a>
                                         <h6 class="product-price">
-                                          @if ($item->offer_price == 0)
-                                             ${{ number_format($item->price,2) }}
-                                          @else
-                                            ${{ number_format($item->offer_price,2) }}
-                                            <small><del class="text-danger">{{ number_format($item->price,2) }}</del></small>
-                                          @endif
+                                            @if ($item->offer_price == 0)
+                                            {{ Helper::currency_converter($item->price) }}
+                                         @else
+                                           {{ Helper::currency_converter($item->offer_price) }}
+                                           <small><del class="text-danger">{{ Helper::currency_converter($item->price) }}</del></small>
+                                         @endif
                                         </h6>
                                     </div>
                                 </div>
@@ -260,6 +297,34 @@
 @endsection
 
 @section('scripts')
+    {{-- -------- price slider -------------  --}}
+    <script>
+        $(document).ready(function () {
+            if ($('#slider-range').length >0) {
+                const max_value = parseInt($('#slider-range').data('max'));
+                const min_value = parseInt($('#slider-range').data('min'));
+                // const currency = $('#slider-range').data('unit') || '';
+                let price_range = min_value+'-'+max_value;
+                if ($('#price_range').length >0 && $('#price_range').val()) {
+                    price_range = $('#price_range').val().trim();
+                }
+
+                let price = price_range.split('-');
+                $('#slider-range').slider({
+                    range:true,
+                    min:min_value,
+                    max:max_value,
+                    values:price,
+                    slide:function(event,ui){
+                        $('#amount').val('$'+ui.values[0]+"-"+'$'+ui.values[1]);
+                        $('#price_range').val(ui.values[0]+"-"+ui.values[1]);
+                    }
+                })
+
+            }
+        });
+    </script>
+
     {{-- //product add to cart  --}}
     <script>
         $(document).on('click','.add_to_cart',function (e) {
@@ -304,7 +369,6 @@
             });
         });
     </script>
-
      {{-- //Cart delete  --}}
      <script>
         $(document).on('click','.cart_delete',function (e) {
@@ -347,58 +411,58 @@
         });
     </script>
  {{-- //product add to wishlist  --}}
- <script>
-    $(document).on('click','.add_to_wishlist',function (e) {
-        e.preventDefault();
-        var product_id = $(this).data('id');
-        var product_qty = $(this).data('qty');
+    <script>
+        $(document).on('click','.add_to_wishlist',function (e) {
+            e.preventDefault();
+            var product_id = $(this).data('id');
+            var product_qty = $(this).data('qty');
 
-        var token = "{{ csrf_token() }}";
-        var path = "{{ route('wishlist.store') }}";
+            var token = "{{ csrf_token() }}";
+            var path = "{{ route('wishlist.store') }}";
 
-        $.ajax({
-            url: path,
-            type: "POST",
-            dataType: "JSON",
-            data: {
-                product_id:product_id,
-                product_qty:product_qty,
-                _token:token
-            },
+            $.ajax({
+                url: path,
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    product_id:product_id,
+                    product_qty:product_qty,
+                    _token:token
+                },
 
-            beforeSend:function(){
-                $('#add_to_wishlist_'+product_id).html('<i class="fa fa-spinner fa-spin"></i>')
-            },
-            complete: function (response) {
-                $('#add_to_wishlist_'+product_id).html('<i class="fa fa-heart"></i>')
-            },
-            success:function(data){
-                if (data['status']) {
-                    //for mini cart
-                    $('body #header-ajax').html(data['header']);
-                    $('body #wishlist_counter').html(data['wishlist_count']);
-                    //start alert
-                    swal({
-                    title: "",
-                    text: data['message'],
-                    icon: "success",
-                    button: false,
-                    timer: 1500,
-                    });
-                    //end alert
-                }else{
-                    //start alert
-                    swal({
-                    title: "",
-                    text: data['message_error'],
-                    icon: "error",
-                    button: false,
-                    timer: 1500,
-                    });
-                    //end alert
+                beforeSend:function(){
+                    $('#add_to_wishlist_'+product_id).html('<i class="fa fa-spinner fa-spin"></i>')
+                },
+                complete: function (response) {
+                    $('#add_to_wishlist_'+product_id).html('<i class="fa fa-heart"></i>')
+                },
+                success:function(data){
+                    if (data['status']) {
+                        //for mini cart
+                        $('body #header-ajax').html(data['header']);
+                        $('body #wishlist_counter').html(data['wishlist_count']);
+                        //start alert
+                        swal({
+                        title: "",
+                        text: data['message'],
+                        icon: "success",
+                        button: false,
+                        timer: 1500,
+                        });
+                        //end alert
+                    }else{
+                        //start alert
+                        swal({
+                        title: "",
+                        text: data['message_error'],
+                        icon: "error",
+                        button: false,
+                        timer: 1500,
+                        });
+                        //end alert
+                    }
                 }
-            }
+            });
         });
-    });
-</script>
+    </script>
 @endsection

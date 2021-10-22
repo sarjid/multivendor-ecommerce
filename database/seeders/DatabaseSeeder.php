@@ -19,5 +19,8 @@ class DatabaseSeeder extends Seeder
          \App\Models\Category::factory(10)->create();
          \App\Models\Brand::factory(10)->create();
          \App\Models\Product::factory(200)->create();
+         $this->call(CurrenciesSeederTable::class);
+         $this->call(SettingsTableSeeder::class);
+
     }
 }

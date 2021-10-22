@@ -14,4 +14,10 @@ class Order extends Model
      * @var array
      */
     protected $fillable = ['user_id','product_id','order_number','sub_total','total_amount','coupon','payment_method','payment_status','condition','delivery_charge','quantity','first_name','last_name','email','phone','country','address','city','state','sfirst_name','slast_name','semail','sphone','scountry','saddress','scity','sstate','note'];
+
+
+    //////// User for order details
+    public function products(){
+        return $this->belongsToMany(Product::class,'order_items')->withPivot('quantity')->withTimestamps();
+    }
 }

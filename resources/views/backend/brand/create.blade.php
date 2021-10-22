@@ -90,18 +90,4 @@
 
 </script>
 
-{{-- //parent category show/hide click with yes button --}}
-<script>
-    $('#is_parent').change(function (e) {
-        e.preventDefault();
-        let is_checked = $('#is_parent').prop('checked');
-        if (is_checked) {
-            $('#parent_cat_div').addClass('d-none');
-            $('#parent_cat_div').val('');
-        }else{
-            $('#parent_cat_div').removeClass('d-none');
-        }
-
-    });
-</script>
 @endsection

@@ -15,5 +15,9 @@ class Brand extends Model
      * @var array
      */
     protected $fillable = ['title','slug','photo','status'];
+
+    public function products(){
+        return $this->hasMany('App\Models\Product',)->where('status','active');
+    }
 }
 

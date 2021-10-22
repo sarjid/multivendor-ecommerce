@@ -27,6 +27,7 @@
                     <div class="header">
                         <a href="{{ route('product.create') }}"  class="btn btn-success" style="float: right;">Add New</a>
                         <h2>All products</h2>
+                        Total Products: {{ $products->count() }}
                     </div>
                     <div class="body">
                         <div class="table-responsive">
@@ -78,6 +79,9 @@
                                             <input type="checkbox" value="{{ $item->id }}" name="toggle" data-toggle="switchbutton" {{ $item->status == 'active' ? 'checked':'' }}  data-onlabel="Active" data-offlabel="Inactive" data-onstyle="success" data-offstyle="danger">
                                         </td>
                                         <td>
+                                            <a href="{{ route('product.show',$item->id) }}"  title="add attribute" class="btn btn-outline-info"> <i class="fa fa-plus-circle"></i>
+                                            </a>
+
                                             <a href="javascript::void(0)" data-toggle="modal" data-target="#productModal{{ $item->id }}" data-placement="bottom"  title="view" class="btn btn-outline-secondary"> <i class="icon-eye"></i>
                                             </a>
 

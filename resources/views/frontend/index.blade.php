@@ -233,10 +233,10 @@
                                     <a href="{{ route('product.detail',$nproduct->slug) }}">{{ ucfirst($nproduct->title) }}</a>
                                     <h6 class="product-price">
                                     @if ($nproduct->offer_price == 0)
-                                        ${{ number_format($nproduct->price,2) }}
+                                        {{ Helper::currency_converter($nproduct->price) }}
                                      @else
-                                       ${{ number_format($nproduct->offer_price,2) }}
-                                       <small><del class="text-danger">{{ number_format($nproduct->price,2) }}</del></small>
+                                       {{ Helper::currency_converter($nproduct->offer_price) }}
+                                       <small><del class="text-danger">{{ Helper::currency_converter($nproduct->price) }}</del></small>
                                      @endif
                                     </h6>
                                 </div>
@@ -1402,7 +1402,7 @@
 @endsection
 @section('scripts')
       {{-- //product add to cart  --}}
-      <script>
+    <script>
         $(document).on('click','.add_to_cart',function (e) {
             e.preventDefault();
             var product_id = $(this).data('product-id');
@@ -1446,8 +1446,8 @@
         });
     </script>
 
-    {{-- --------------------- wishlist ---------------  --}}
- {{-- //product add to wishlist  --}}
+{{-- --------------------- wishlist ---------------  --}}
+{{-- //product add to wishlist  --}}
  <script>
     $(document).on('click','.add_to_wishlist',function (e) {
         e.preventDefault();

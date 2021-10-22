@@ -5,7 +5,14 @@
             <i class="icofont-close"></i>
         </th>
         <td>
-            <img src="{{ $item->model->photo }}" alt="Product">
+            @php
+            $photo = explode(',',$item->model->photo);
+            @endphp
+            @if (count($photo) ==1)
+                <img src="{{ $item->model->photo }}" alt="Product">
+            @else
+            <img src="{{ $photo[0] }}" alt="Product">
+            @endif
         </td>
         <td>
             <a href="{{ route('product.detail',$item->model->slug) }}">{{ $item->name }}</a>

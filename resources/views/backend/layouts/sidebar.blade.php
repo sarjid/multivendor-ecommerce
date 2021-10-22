@@ -1,17 +1,14 @@
 <div id="left-sidebar" class="sidebar">
     <div class="sidebar-scroll">
         <div class="user-account">
-            <img src="{{ asset('backend/assets') }}/images/user.png" class="rounded-circle user-photo" alt="User Profile Picture">
+        @if (auth('admin')->user()->photo)
+            <img src="{{ auth('admin')->user()->photo }}" class="rounded-circle user-photo" alt="User Profile Picture">
+        @else
+            <img src="{{ Helper::userDefaultImage() }}" class="rounded-circle user-photo" alt="User Profile Picture"">
+        @endif
             <div class="dropdown">
                 <span>Welcome,</span>
-                <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown"><strong>{{ auth()->user()->username }}</strong></a>
-                <ul class="dropdown-menu dropdown-menu-right account">
-                    <li><a href="page-profile2.html"><i class="icon-user"></i>My Profile</a></li>
-                    <li><a href="app-inbox.html"><i class="icon-envelope-open"></i>Messages</a></li>
-                    <li><a href="javascript:void(0);"><i class="icon-settings"></i>Settings</a></li>
-                    <li class="divider"></li>
-                    <li><a href="page-login.html"><i class="icon-power"></i>Logout</a></li>
-                </ul>
+                <a href="{{ route('admin') }}" class="user-name" ><strong>{{ auth()->guard('admin')->user()->username }}</strong></a>
             </div>
             <hr>
             <ul class="row list-unstyled">
@@ -115,13 +112,26 @@
                             </ul>
                         </li>
 
-                        <li>
-                            <a href="javascript::void(0)" class="has-arrow"><i class="icon-layers"></i>
-                                <span>Order Management</span>
+                        <li class="{{ \Request::is('admin/currency*') ? 'active':'' }}">
+                            <a href="javascript::void(0)" class="has-arrow"><i class="icon-briefcase"></i>
+                                <span>Currency Management</span>
                             </a>
                             <ul>
-                                <li><a href="app-inbox.html">All Department</a></li>
-                                <li><a href="app-inbox.html">Add Department</a></li>
+                                <li class="{{ \Request::is('admin/currency') ? 'active':'' }}">
+                                    <a href="{{ route('currency.index') }}">All Currency</a>
+                                </li>
+                                <li class="{{ \Request::is('admin/currency/create') ? 'active':'' }}">
+                                    <a href="{{ route('currency.create') }}">Add Currency</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="{{ \Request::is('admin/order*') ? 'active':'' }}">
+                            <a href="javascript::void(0)" class="has-arrow"><i class="icon-layers"></i>
+                                <span>Orders Management</span>
+                            </a>
+                            <ul>
+                                <li class="{{ \Request::is('admin/order*') ? 'active':'' }}"><a href="{{ route('order.index') }}">All Order</a></li>
                             </ul>
                         </li>
 
@@ -130,8 +140,18 @@
                                 <span>Carts Management</span>
                             </a>
                             <ul>
-                                <li><a href="app-inbox.html">All Department</a></li>
-                                <li><a href="app-inbox.html">Add Department</a></li>
+                                <li><a href="app-inbox.html">All Carts</a></li>
+                                <li><a href="app-inbox.html">Add Carts</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="{{ \Request::is('admin/seller*') ? 'active':'' }}">
+                            <a href="javascript::void(0)" class="has-arrow"><i class="icon-users"></i>
+                                <span>Seller Management</span>
+                            </a>
+                            <ul>
+                                <li class="{{ \Request::is('admin/seller') ? 'active':'' }}"><a href="{{ route('seller.index') }}">All Seller</a></li>
+                                <li class="{{ \Request::is('admin/seller/create') ? 'active':'' }}"><a href="{{ route('seller.create') }}">Add Seller</a></li>
                             </ul>
                         </li>
 
@@ -211,8 +231,8 @@
                             </ul>
                         </li>
 
-                        <li class="active">
-                            <a href="#"><i class="icon-settings"></i> <span>Settings</span></a>
+                        <li class="{{ \Request::is('admin/settings*') ? 'active':'' }}">
+                            <a href="{{ route('setting.create') }}"><i class="icon-settings"></i> <span>Settings</span></a>
                         </li>
 
                     </ul>

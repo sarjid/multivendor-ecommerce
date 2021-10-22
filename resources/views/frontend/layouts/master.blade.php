@@ -21,7 +21,7 @@
                 <div class="col-6">
                     <div class="welcome-note">
                         <span class="popover--text" data-toggle="popover" data-content="Welcome to Bigshop ecommerce template."><i class="icofont-info-square"></i></span>
-                        <span class="text">Welcome to Bigshop ecommerce template.</span>
+                        <span class="text">Welcome to {{ get_setting('title') }}</span>
                     </div>
                 </div>
                 <div class="col-6">
@@ -42,12 +42,23 @@
                         <!-- Currency Dropdown -->
                         <div class="currency-dropdown">
                             <div class="dropdown">
+                                @php
+                                    Helper::currency_Load();
+                                    $currency_code = session('currency_code');
+                                    $currency_symbol = session('currency_symbol');
+                                    if ($currency_symbol == "") {
+                                       $system_default_currency_info = session('system_default_currency_info');
+                                       $currency_code = $system_default_currency_info->code;
+                                       $currency_symbol = $system_default_currency_info->symbol;
+                                    }
+                                @endphp
                                 <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    $ USD
+                                    {{ $currency_symbol }} {{ $currency_code }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-                                    <a class="dropdown-item" href="#">৳ BDT</a>
-                                    <a class="dropdown-item" href="#">€ Euro</a>
+                                @foreach (App\Models\Currency::where('status','active')->get() as $currency)
+                                    <a class="dropdown-item" href="javascript::void(0)" onclick="currency_change('{{ $currency['code'] }}')">{{ $currency->symbol }} {{ \Illuminate\Support\Str::upper($currency->code) }}</a>
+                                @endforeach
                                 </div>
                             </div>
                         </div>
@@ -63,7 +74,7 @@
             <div class="classy-nav-container breakpoint-off">
                 <nav class="classy-navbar" id="bigshopNav">
                     <!-- Nav Brand -->
-                    <a href="{{ url('/') }}" class="nav-brand"><img src="{{ asset('frontend/img/core-img/') }}/logo.png" alt="logo"></a>
+                    <a href="{{ url('/') }}" class="nav-brand"><img src="{{ asset(get_setting('logo')) }}" alt="logo"></a>
 
                     <!-- Toggler -->
                     <div class="classy-navbar-toggler">
@@ -103,9 +114,9 @@
     </header>
     <!-- Header Area End -->
 
-       <div class="container">
+       {{-- <div class="container">
         @include('backend.layouts.notification')
-       </div>
+       </div> --}}
 
         {{-- ---------- main area --------  --}}
         @yield('content')
